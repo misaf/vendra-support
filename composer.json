@@ -1,0 +1,22 @@
+{
+	"name": "misaf/vendra-support",
+	"description": "Shared support classes for Vendra modules",
+	"license": "MIT",
+	"type": "vendra-module",
+	"require": {
+		"php": "^8.3",
+		"illuminate/console": "^13.0",
+		"illuminate/database": "^13.0",
+		"illuminate/support": "^13.0",
+		"laravel/prompts": "^0.3",
+		"misaf/vendra-tenant": "dev-master"
+	},
+	"minimum-stability": "stable",
+	"prefer-stable": true,
+	"autoload": {
+		"psr-4": {
+			"Misaf\\VendraSupport\\": "src/",
+			"Misaf\\VendraSupport\\Tests\\": "tests/"
+		}
+	}
+}
