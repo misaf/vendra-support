@@ -53,6 +53,7 @@ abstract class BaseSeedCommand extends Command implements PromptsForMissingInput
         foreach ($seederClasses as $seederClass) {
             $exitCode = $this->call('db:seed', [
                 '--class' => $seederClass,
+                '--force' => true,
             ]);
 
             if (self::SUCCESS !== $exitCode) {
