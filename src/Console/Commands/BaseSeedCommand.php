@@ -52,8 +52,7 @@ abstract class BaseSeedCommand extends Command implements PromptsForMissingInput
 
         foreach ($seederClasses as $seederClass) {
             $exitCode = $this->call('db:seed', [
-                '--module' => static::MODULE_NAME,
-                '--class'  => $seederClass,
+                '--class' => $seederClass,
             ]);
 
             if (self::SUCCESS !== $exitCode) {
