@@ -6,33 +6,16 @@ namespace Misaf\VendraSupport\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
-use Illuminate\Database\Eloquent\Builder;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\multiselect;
-use function Laravel\Prompts\search;
 
-use Misaf\VendraTenant\Models\Tenant;
-
-abstract class BaseSeedCommand extends Command implements PromptsForMissingInput
+abstract class SeedCommand extends Command implements PromptsForMissingInput
 {
-    private const int TENANT_SEARCH_LIMIT = 10;
-
-    protected const string MODULE_NAME = '';
-
     public function handle(): int
     {
         if (app()->isDownForMaintenance()) {
             $this->warn('Application is in maintenance mode. Command aborted.');
-
-            return self::FAILURE;
-        }
-
-        $tenantInput = (string) $this->argument('tenant');
-        $tenant = $this->resolveTenant($tenantInput);
-
-        if ( ! $tenant) {
-            $this->error(sprintf('Tenant [%s] was not found.', $tenantInput));
 
             return self::FAILURE;
         }
@@ -48,7 +31,9 @@ abstract class BaseSeedCommand extends Command implements PromptsForMissingInput
             return self::FAILURE;
         }
 
-        $tenant->makeCurrent();
+        if ( ! $this->prepareForSeeding()) {
+            return self::FAILURE;
+        }
 
         foreach ($seederClasses as $seederClass) {
             $exitCode = $this->call('db:seed', [
@@ -76,13 +61,6 @@ abstract class BaseSeedCommand extends Command implements PromptsForMissingInput
     protected function promptForMissingArgumentsUsing(): array
     {
         return [
-            'tenant' => fn() => search(
-                label: 'Which tenant should receive seed data?',
-                placeholder: 'Search tenant slug',
-                options: fn(string $value): array => $this->tenantSearchOptions($value),
-                hint: 'Seeders run only for the selected tenant.',
-                scroll: self::TENANT_SEARCH_LIMIT,
-            ),
             'seeders' => fn() => $this->promptForSeeders(),
         ];
     }
@@ -92,20 +70,17 @@ abstract class BaseSeedCommand extends Command implements PromptsForMissingInput
      */
     abstract protected function seeders(): array;
 
+    protected function prepareForSeeding(): bool
+    {
+        return true;
+    }
+
     /**
      * @return list<string>
      */
     private function seederArguments(): array
     {
         return array_values($this->argument('seeders'));
-    }
-
-    private function resolveTenant(string $tenant): ?Tenant
-    {
-        return Tenant::query()
-            ->whereKey($tenant)
-            ->orWhere('slug', $tenant)
-            ->first();
     }
 
     /**
@@ -159,27 +134,5 @@ abstract class BaseSeedCommand extends Command implements PromptsForMissingInput
     private function individualSeederOptions(): array
     {
         return array_combine(array_keys($this->seeders()), array_keys($this->seeders()));
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    private function tenantSearchOptions(string $value): array
-    {
-        $search = mb_trim($value);
-
-        $tenants = Tenant::query()
-            ->select(['id', 'slug'])
-            ->when('' !== $search, fn(Builder $query): Builder => $query->where('slug', 'like', "%{$search}%"))
-            ->limit(self::TENANT_SEARCH_LIMIT)
-            ->get();
-
-        $options = [];
-
-        foreach ($tenants as $tenant) {
-            $options[$tenant->id] = $tenant->slug;
-        }
-
-        return $options;
     }
 }
