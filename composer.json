@@ -24,5 +24,11 @@
 				"Misaf\\VendraSupport\\Providers\\SupportServiceProvider"
 			]
 		}
+	},
+	"scripts": {
+		"analyse": "vendor/bin/phpstan analyse",
+		"format": "vendor/bin/pint",
+		"test": "vendor/bin/pest",
+		"test-coverage": "vendor/bin/pest --coverage"
 	}
 }
