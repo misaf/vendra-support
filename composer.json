@@ -17,5 +17,12 @@
 			"Misaf\\VendraSupport\\": "src/",
 			"Misaf\\VendraSupport\\Tests\\": "tests/"
 		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Misaf\\VendraSupport\\Providers\\SupportServiceProvider"
+			]
+		}
 	}
 }
