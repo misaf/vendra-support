@@ -14,7 +14,11 @@
 	"prefer-stable": true,
 	"autoload": {
 		"psr-4": {
-			"Misaf\\VendraSupport\\": "src/",
+			"Misaf\\VendraSupport\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
 			"Misaf\\VendraSupport\\Tests\\": "tests/"
 		}
 	},
