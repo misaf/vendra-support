@@ -6,11 +6,14 @@ namespace Misaf\VendraSupport\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
+use Misaf\VendraSupport\Concerns\RequiresCurrentTenant;
 use ReflectionClass;
 use UnexpectedValueException;
 
 abstract class DemoContentSeeder extends Seeder
 {
+    use RequiresCurrentTenant;
+
     protected const string FIXTURE_FILE = 'demo-content.json';
 
     final public function run(): void

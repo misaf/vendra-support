@@ -17,10 +17,27 @@ trait RequiresCurrentTenant
         if ( ! $tenant instanceof Model) {
             throw new RuntimeException(sprintf(
                 '%s seeding requires a current tenant.',
-                defined('static::MODULE_NAME') ? static::MODULE_NAME : static::class,
+                $this->tenantModuleName(),
             ));
         }
 
         return $tenant;
+    }
+
+    private function tenantModuleName(): string
+    {
+        $constant = static::class . '::MODULE_NAME';
+
+        if ( ! defined($constant)) {
+            return static::class;
+        }
+
+        $moduleName = constant($constant);
+
+        if ( ! is_string($moduleName)) {
+            return static::class;
+        }
+
+        return $moduleName;
     }
 }

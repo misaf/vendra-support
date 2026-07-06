@@ -7,9 +7,12 @@ namespace Misaf\VendraSupport\Database\Seeders;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
+use Misaf\VendraSupport\Concerns\RequiresCurrentTenant;
 
 abstract class PermissionPolicySeeder extends Seeder
 {
+    use RequiresCurrentTenant;
+
     /**
      * @return list<string>
      */

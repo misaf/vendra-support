@@ -31,8 +31,14 @@ abstract class TenantSeedCommand extends SeedCommand
 
     protected function prepareForSeeding(): bool
     {
-        $tenantInput = (string) $this->argument('tenant');
+        $tenantInput = $this->argument('tenant');
         $tenantResolver = app(TenantResolver::class);
+
+        if ( ! is_int($tenantInput) && ! is_string($tenantInput)) {
+            $this->error('Invalid tenant selection. Tenant must be an ID or slug.');
+
+            return false;
+        }
 
         if ( ! $tenantResolver->available()) {
             $this->error('Tenant module is not available.');

@@ -20,7 +20,15 @@ abstract class SeedCommand extends Command implements PromptsForMissingInput
             return self::FAILURE;
         }
 
-        $seederClasses = $this->resolveSeederClasses($this->seederArguments());
+        $requestedSeeders = $this->requestedSeeders();
+
+        if (null === $requestedSeeders) {
+            $this->error('Invalid seeder selection. Seeder names must be strings.');
+
+            return self::FAILURE;
+        }
+
+        $seederClasses = $this->resolveSeederClasses($requestedSeeders);
 
         if (null === $seederClasses) {
             $this->error(sprintf(
@@ -78,14 +86,6 @@ abstract class SeedCommand extends Command implements PromptsForMissingInput
     /**
      * @return list<string>
      */
-    private function seederArguments(): array
-    {
-        return array_values($this->argument('seeders'));
-    }
-
-    /**
-     * @return list<string>
-     */
     private function promptForSeeders(): array
     {
         if (confirm(label: 'Run all seeders?', default: true)) {
@@ -94,7 +94,7 @@ abstract class SeedCommand extends Command implements PromptsForMissingInput
 
         return array_values(array_filter(multiselect(
             label: 'Which seeders should run?',
-            options: $this->individualSeederOptions(),
+            options: array_keys($this->seeders()),
             required: true,
             hint: 'Choose one or more seeders.',
         ), is_string(...)));
@@ -111,28 +111,42 @@ abstract class SeedCommand extends Command implements PromptsForMissingInput
             return null;
         }
 
+        $available = $this->seeders();
+
         if (in_array('all', $seeders, true)) {
-            return array_values($this->seeders());
+            return array_values($available);
         }
 
         $classes = [];
 
         foreach ($seeders as $seeder) {
-            if ( ! array_key_exists($seeder, $this->seeders())) {
+            if ( ! array_key_exists($seeder, $available)) {
                 return null;
             }
 
-            $classes[] = $this->seeders()[$seeder];
+            $classes[] = $available[$seeder];
         }
 
         return $classes;
     }
 
     /**
-     * @return array<string, string>
+     * @return list<string>|null
      */
-    private function individualSeederOptions(): array
+    private function requestedSeeders(): ?array
     {
-        return array_combine(array_keys($this->seeders()), array_keys($this->seeders()));
+        $seeders = $this->argument('seeders');
+
+        if ( ! is_array($seeders) || ! array_is_list($seeders)) {
+            return null;
+        }
+
+        foreach ($seeders as $seeder) {
+            if ( ! is_string($seeder)) {
+                return null;
+            }
+        }
+
+        return $seeders;
     }
 }

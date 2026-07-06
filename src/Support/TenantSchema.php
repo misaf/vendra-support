@@ -11,12 +11,13 @@ use Throwable;
 
 final class TenantSchema
 {
+    /**
+     * @var array<string, bool>
+     */
+    private static array $tenantColumnCache = [];
+
     public static function enabled(): bool
     {
-        if ( ! app()->bound(TenantResolver::class)) {
-            return false;
-        }
-
         return app(TenantResolver::class)->available();
     }
 
@@ -45,7 +46,7 @@ final class TenantSchema
      */
     public static function tenantIndex(string|array $columns): array
     {
-        $columns = is_array($columns) ? array_values($columns) : [$columns];
+        $columns = is_array($columns) ? $columns : [$columns];
 
         if ( ! self::enabled()) {
             return $columns;
@@ -56,8 +57,12 @@ final class TenantSchema
 
     public static function hasTenantColumn(string $table): bool
     {
+        if (array_key_exists($table, self::$tenantColumnCache)) {
+            return self::$tenantColumnCache[$table];
+        }
+
         try {
-            return Schema::hasColumn($table, 'tenant_id');
+            return self::$tenantColumnCache[$table] = Schema::hasColumn($table, 'tenant_id');
         } catch (Throwable) {
             return false;
         }

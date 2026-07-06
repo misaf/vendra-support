@@ -10,10 +10,13 @@ use Illuminate\Database\Eloquent\Scope;
 use Misaf\VendraSupport\Contracts\TenantResolver;
 use Misaf\VendraSupport\Support\TenantSchema;
 
+/**
+ * @implements Scope<Model>
+ */
 class TenantScope implements Scope
 {
     /**
-     * @param Builder<Model> $builder
+     * @param Builder<covariant Model> $builder
      * @param Model $model
      */
     public function apply(Builder $builder, Model $model): void
@@ -22,17 +25,8 @@ class TenantScope implements Scope
             return;
         }
 
-        if ($tenantId = $this->currentTenantId()) {
+        if ($tenantId = app(TenantResolver::class)->currentId()) {
             $builder->where($model->qualifyColumn('tenant_id'), $tenantId);
         }
-    }
-
-    private function currentTenantId(): ?int
-    {
-        if ( ! app()->bound(TenantResolver::class)) {
-            return null;
-        }
-
-        return app(TenantResolver::class)->currentId();
     }
 }
