@@ -37,10 +37,25 @@
 	},
 	"config": {
 		"allow-plugins": {
+			"pestphp/pest-plugin": true,
+			"php-http/discovery": true,
 			"phpstan/extension-installer": true
-		}
+		},
+		"optimize-autoloader": true,
+		"preferred-install": "dist",
+		"sort-packages": true
 	},
 	"require-dev": {
+		"larastan/larastan": "^3.0",
+		"laravel/boost": "^2.0",
+		"laravel/pint": "^1.0",
+		"nunomaduro/collision": "^8.0",
+		"orchestra/testbench": "^11.0",
+		"pestphp/pest": "^4.0",
+		"pestphp/pest-plugin-arch": "^4.0",
+		"pestphp/pest-plugin-laravel": "^4.0",
+		"pestphp/pest-plugin-profanity": "^4.0",
+		"pestphp/pest-plugin-type-coverage": "^4.0",
 		"phpstan/extension-installer": "^1.4"
 	}
 }
