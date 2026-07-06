@@ -31,19 +31,10 @@ trait BelongsToTenant
                 return;
             }
 
-            if ($tenantId = static::currentTenantId()) {
+            if ($tenantId = app(TenantResolver::class)->currentId()) {
                 $model->setAttribute('tenant_id', $tenantId);
             }
         });
-    }
-
-    private static function currentTenantId(): ?int
-    {
-        if ( ! app()->bound(TenantResolver::class)) {
-            return null;
-        }
-
-        return app(TenantResolver::class)->currentId();
     }
 
     /**
@@ -51,10 +42,6 @@ trait BelongsToTenant
      */
     private function tenantModelClass(): string
     {
-        if ( ! app()->bound(TenantResolver::class)) {
-            return Model::class;
-        }
-
         return app(TenantResolver::class)->modelClass();
     }
 }
