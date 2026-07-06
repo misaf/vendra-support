@@ -1,0 +1,16 @@
+# Changelog
+
+All notable changes to `vendra-support` will be documented in this file.
+
+## 1.0.0 - 2026-07-06
+
+<!-- Release notes generated using configuration in .github/release.yml at 3a595c520a527dd0b03e12cd05c5934a898b7ab6 -->
+
+## What's Changed
+### Changes
+* Bump actions/cache from 4 to 6 in the github-actions group by @dependabot[bot] in https://github.com/misaf/vendra-support/pull/1
+
+## New Contributors
+* @dependabot[bot] made their first contribution in https://github.com/misaf/vendra-support/pull/1
+
+**Full Changelog**: https://github.com/misaf/vendra-support/commits/v1.0.0
