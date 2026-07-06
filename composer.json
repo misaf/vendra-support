@@ -34,5 +34,13 @@
 		"format": "vendor/bin/pint",
 		"test": "vendor/bin/pest",
 		"test-coverage": "vendor/bin/pest --coverage"
+	},
+	"config": {
+		"allow-plugins": {
+			"phpstan/extension-installer": true
+		}
+	},
+	"require-dev": {
+		"phpstan/extension-installer": "^1.4"
 	}
 }
