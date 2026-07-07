@@ -6,6 +6,7 @@ namespace Misaf\VendraSupport\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
 use Misaf\VendraSupport\Contracts\TenantResolver;
+use Misaf\VendraSupport\Support\TenantAwareness;
 use RuntimeException;
 
 trait RequiresCurrentTenant
@@ -22,6 +23,22 @@ trait RequiresCurrentTenant
         }
 
         return $tenant;
+    }
+
+    /**
+     * The current tenant, or null when the application is not tenant-aware.
+     *
+     * When tenant awareness is enabled a current tenant is still required, so a
+     * misconfigured tenant-aware seeding run fails loudly instead of silently
+     * producing unscoped records.
+     */
+    protected function currentTenantOrNull(): ?Model
+    {
+        if ( ! TenantAwareness::enabled()) {
+            return null;
+        }
+
+        return $this->currentTenant();
     }
 
     private function tenantModuleName(): string

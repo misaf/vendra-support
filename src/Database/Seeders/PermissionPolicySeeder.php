@@ -13,12 +13,17 @@ abstract class PermissionPolicySeeder extends Seeder
 {
     use RequiresCurrentTenant;
 
+    public function run(): void
+    {
+        $this->seedPermissionPolicies($this->currentTenantOrNull()?->getKey());
+    }
+
     /**
      * @return list<string>
      */
     abstract protected function policies(): array;
 
-    protected function seedPermissionPolicies(int|string $tenantKey): void
+    protected function seedPermissionPolicies(int|string|null $tenantKey = null): void
     {
         /** @var class-string<Model> $permissionModel */
         $permissionModel = Config::string('permission.models.permission');
@@ -32,7 +37,11 @@ abstract class PermissionPolicySeeder extends Seeder
                 'name'       => $policy,
                 'guard_name' => $guardName,
             ]);
-            $permission->setAttribute('tenant_id', $tenantKey);
+
+            if (null !== $tenantKey) {
+                $permission->setAttribute('tenant_id', $tenantKey);
+            }
+
             $permission->save();
         }
     }
