@@ -16,6 +16,8 @@ final class SupportServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__ . '/../../config/vendra-support.php', 'vendra-support');
+
         $this->app->singletonIf(TenantResolver::class, NullTenantResolver::class);
         $this->app->singleton(TenantSeeders::class);
     }
