@@ -2,6 +2,14 @@
 
 All notable changes to `vendra-support` will be documented in this file.
 
+## 1.2.0 - 2026-07-08
+
+<!-- Release notes generated using configuration in .github/release.yml at 216e8213c9fa7b5c7593e8cd45db1e56780f45bf -->
+
+
+
+**Full Changelog**: https://github.com/misaf/vendra-support/compare/v1.1.0...v1.2.0
+
 ## 1.1.0 - 2026-07-07
 
 <!-- Release notes generated using configuration in .github/release.yml at a27bf2cae9673577c0dc0d17c64984c3fb80b6bc -->
