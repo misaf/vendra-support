@@ -24,6 +24,10 @@ final class SupportServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->publishes([
+            __DIR__ . '/../../config/vendra-support.php' => config_path('vendra-support.php'),
+        ], 'vendra-support-config');
+
         Event::listen(TenantProvisioned::class, RunTenantSeeders::class);
     }
 }
