@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
 use Misaf\VendraSupport\Concerns\RequiresCurrentTenant;
+use UnexpectedValueException;
 
 abstract class PermissionPolicySeeder extends Seeder
 {
@@ -15,7 +16,13 @@ abstract class PermissionPolicySeeder extends Seeder
 
     public function run(): void
     {
-        $this->seedPermissionPolicies($this->currentTenantOrNull()?->getKey());
+        $tenantKey = $this->currentTenantOrNull()?->getKey();
+
+        if (null !== $tenantKey && ! is_int($tenantKey) && ! is_string($tenantKey)) {
+            throw new UnexpectedValueException('The current tenant key must be an integer or string.');
+        }
+
+        $this->seedPermissionPolicies($tenantKey);
     }
 
     /**
