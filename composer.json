@@ -3,6 +3,25 @@
 	"description": "Shared support classes for Vendra modules",
 	"license": "MIT",
 	"type": "vendra-module",
+	"keywords": [
+		"laravel",
+		"filamentphp",
+		"misaf",
+		"vendra",
+		"vendra-support"
+	],
+	"authors": [
+		{
+			"name": "Ehsan Mahmoodi",
+			"email": "misaf.1990@gmail.com",
+			"role": "Developer"
+		}
+	],
+	"homepage": "https://github.com/misaf/vendra-support",
+	"support": {
+		"issues": "https://github.com/misaf/vendra-support/issues",
+		"source": "https://github.com/misaf/vendra-support"
+	},
 	"require": {
 		"php": "^8.3",
 		"filament/support": "^5.0",
@@ -10,6 +29,21 @@
 		"illuminate/database": "^13.0",
 		"illuminate/support": "^13.0",
 		"laravel/prompts": "^0.3"
+	},
+	"require-dev": {
+		"fakerphp/faker": "^1.0",
+		"larastan/larastan": "^3.0",
+		"laravel/boost": "^2.0",
+		"laravel/pint": "^1.0",
+		"mockery/mockery": "^1.0",
+		"nunomaduro/collision": "^8.0",
+		"orchestra/testbench": "^11.0",
+		"pestphp/pest": "^4.0",
+		"pestphp/pest-plugin-arch": "^4.0",
+		"pestphp/pest-plugin-laravel": "^4.0",
+		"pestphp/pest-plugin-profanity": "^4.0",
+		"pestphp/pest-plugin-type-coverage": "^4.0",
+		"phpstan/extension-installer": "^1.4"
 	},
 	"minimum-stability": "stable",
 	"prefer-stable": true,
@@ -22,6 +56,16 @@
 		"psr-4": {
 			"Misaf\\VendraSupport\\Tests\\": "tests/"
 		}
+	},
+	"config": {
+		"allow-plugins": {
+			"pestphp/pest-plugin": true,
+			"php-http/discovery": true,
+			"phpstan/extension-installer": true
+		},
+		"optimize-autoloader": true,
+		"preferred-install": "dist",
+		"sort-packages": true
 	},
 	"extra": {
 		"laravel": {
@@ -36,27 +80,5 @@
 		"test": "vendor/bin/pest",
 		"test-coverage": "vendor/bin/pest --coverage"
 	},
-	"config": {
-		"allow-plugins": {
-			"pestphp/pest-plugin": true,
-			"php-http/discovery": true,
-			"phpstan/extension-installer": true
-		},
-		"optimize-autoloader": true,
-		"preferred-install": "dist",
-		"sort-packages": true
-	},
-	"require-dev": {
-		"larastan/larastan": "^3.0",
-		"laravel/boost": "^2.0",
-		"laravel/pint": "^1.0",
-		"nunomaduro/collision": "^8.0",
-		"orchestra/testbench": "^11.0",
-		"pestphp/pest": "^4.0",
-		"pestphp/pest-plugin-arch": "^4.0",
-		"pestphp/pest-plugin-laravel": "^4.0",
-		"pestphp/pest-plugin-profanity": "^4.0",
-		"pestphp/pest-plugin-type-coverage": "^4.0",
-		"phpstan/extension-installer": "^1.4"
-	}
+	"$schema": "https://getcomposer.org/schema.json"
 }
