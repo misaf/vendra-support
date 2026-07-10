@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use Illuminate\Database\Eloquent\Model;
+namespace Misaf\VendraSupport\Tests\Unit;
+
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Misaf\VendraSupport\Support\EloquentCurrencyResolver;
@@ -54,12 +55,3 @@ it('provides active currency values from an eloquent model', function (): void {
         ])
         ->and($resolver->activeCodes())->toBe(['USD', 'EUR']);
 });
-
-final class SupportTestCurrency extends Model
-{
-    public $timestamps = false;
-
-    protected $table = 'support_test_currencies';
-
-    protected $guarded = [];
-}

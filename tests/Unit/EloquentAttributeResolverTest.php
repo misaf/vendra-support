@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use Illuminate\Database\Eloquent\Model;
+namespace Misaf\VendraSupport\Tests\Unit;
+
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Misaf\VendraSupport\Support\EloquentAttributeResolver;
@@ -34,14 +35,3 @@ it('provides enabled attribute options and the value model', function (): void {
             1 => 'Material',
         ]);
 });
-
-final class SupportTestAttribute extends Model
-{
-    public $timestamps = false;
-
-    protected $table = 'support_test_attributes';
-
-    protected $guarded = [];
-}
-
-final class SupportTestResolvedAttributeValue extends Model {}

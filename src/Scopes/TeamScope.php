@@ -20,7 +20,7 @@ class TeamScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        if (null !== app(TenantResolver::class)->current()) {
+        if ( ! app()->bound(TenantResolver::class) || null !== app(TenantResolver::class)->current()) {
             return;
         }
 

@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use Illuminate\Database\Eloquent\Model;
+namespace Misaf\VendraSupport\Tests\Unit;
+
 use Misaf\VendraSupport\Contracts\AttributeResolver;
 use Misaf\VendraSupport\Support\AttributeIntegration;
 use Misaf\VendraSupport\Support\NullAttributeResolver;
@@ -66,5 +67,3 @@ it('uses the support null resolver fallback shape', function (): void {
         ->and($resolver->valueModel())->toBeNull()
         ->and($resolver->options())->toBe([]);
 });
-
-final class SupportTestAttributeValue extends Model {}
