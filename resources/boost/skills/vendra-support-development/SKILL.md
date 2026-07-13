@@ -1,6 +1,6 @@
 ---
 name: vendra-support-development
-description: "Use this skill when creating, modifying, reviewing, or testing the Vendra Support module in app-modules/vendra-support, or when changing anything tenant-awareness related. Trigger for TenantResolver, NullTenantResolver, TenantAwareness, BelongsToTenant, TenantScope, TeamScope, TenantSchema, RequiresCurrentTenant, TenantSeeders, base DemoContentSeeder / PermissionPolicySeeder, SeedCommand / TenantSeedCommand, shared Filament concerns, and shared events/listeners."
+description: "Use this skill when creating, modifying, reviewing, or testing the Vendra Support module in packages/vendra-support, or when changing anything tenant-awareness related. Trigger for TenantResolver, NullTenantResolver, TenantAwareness, BelongsToTenant, TenantScope, TeamScope, TenantSchema, RequiresCurrentTenant, TenantSeeders, base DemoContentSeeder / PermissionPolicySeeder, SeedCommand / TenantSeedCommand, shared Filament concerns, and shared events/listeners."
 ---
 
 # Vendra Support
@@ -11,7 +11,7 @@ Always use this skill together with `modular` for module structure, `laravel-bes
 
 ## Module Boundary
 
-Treat `app-modules/vendra-support` as the shared support and tenant-awareness core.
+Treat `packages/vendra-support` as the shared support and tenant-awareness core.
 
 - Use namespace `Misaf\VendraSupport`.
 - Own the tenant abstraction here and nowhere else: the `TenantResolver` contract, the default `NullTenantResolver`, `TenantAwareness`, `BelongsToTenant`, `TenantScope`/`TeamScope`, `TenantSchema`, `RequiresCurrentTenant`, `TenantSeeders`, the base seeders and seed commands, and shared Filament concerns.
@@ -36,5 +36,5 @@ Tenant awareness is derived purely from the bound resolver — never from config
 
 - Keep tests purposeful: cover the resolver-derived tenant contract, scopes, schema helpers, and base seeder/command behavior with tenancy both on and off.
 - Keep Pest architecture tests in `tests/ArchTest.php`: the `php`, `security`, and `laravel` presets, plus `arch()->expect('Misaf\VendraSupport')->not->toUse('Misaf\VendraTenant')` — support must never couple to a concrete provider.
-- Run module checks: `composer --working-dir=app-modules/vendra-support test` and `composer --working-dir=app-modules/vendra-support analyse`.
+- Run module checks: `composer --working-dir=packages/vendra-support test` and `composer --working-dir=packages/vendra-support analyse`.
 - If PHP files changed, run `vendor/bin/pint --dirty --format agent`.

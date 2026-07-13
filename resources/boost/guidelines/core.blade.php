@@ -4,7 +4,7 @@ The `misaf/vendra-support` package owns the shared support layer for every Vendr
 
 ### Standards
 
-- Keep shared support code inside `app-modules/vendra-support` using the `Misaf\VendraSupport` namespace.
+- Keep shared support code inside `packages/vendra-support` using the `Misaf\VendraSupport` namespace.
 - This package owns the tenant contract and defaults: `Contracts\TenantResolver`, the default `NullTenantResolver` binding, `Support\TenantAwareness`, `Traits\BelongsToTenant`, `Scopes\TenantScope` / `TeamScope`, `Support\TenantSchema`, `Concerns\RequiresCurrentTenant`, `Support\TenantSeeders`, the base `Database\Seeders` (`DemoContentSeeder`, `PermissionPolicySeeder`), the base `Console\Commands` (`SeedCommand`, `TenantSeedCommand`), shared `Filament\Concerns`, and shared events/listeners.
 - **This is the only place tenant logic lives.** It defines the abstraction and binds `NullTenantResolver` by default (tenancy disabled). A tenant provider (e.g. `misaf/vendra-tenant`) overrides the `TenantResolver` binding to enable it.
 - Never reference a concrete tenant provider such as `Misaf\VendraTenant` here. Support must build and run with no provider installed; everything derives from the bound `TenantResolver` and `TenantAwareness::enabled()`. There is no `tenant_aware` config toggle.

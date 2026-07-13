@@ -1,6 +1,5 @@
 {
     "name": "misaf/vendra-support",
-    "version": "0.0.7",
     "description": "Shared support classes for Vendra modules",
     "keywords": [
         "laravel",
@@ -54,13 +53,13 @@
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "0.0.x-dev"
+        },
         "laravel": {
             "providers": [
                 "Misaf\\VendraSupport\\Providers\\SupportServiceProvider"
             ]
-        },
-        "branch-alias": {
-            "dev-master": "13.x-dev"
         }
     },
     "scripts": {
