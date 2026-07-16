@@ -7,6 +7,12 @@ description: "Use this skill when creating, modifying, reviewing, or testing the
 
 ## Workflow
 
+## Translatable Persistence
+
+- Making a persisted model field translatable is an explicit domain choice unless this package already requires it.
+- Every field listed in a model's `$translatable` array must definitely use a JSON database column. Keep its model traits/casts, factories, validation, Filament locale UI, API serialization, and tests translation-aware.
+- A field not listed in `$translatable` must use the appropriate scalar database type and must not use Spatie Translatable, translatable slug traits, locale switchers, translated callbacks, or translation-shaped array data.
+
 Always use this skill together with `laravel-best-practices` for Laravel PHP and `pest-testing` when tests are added or changed. Before code changes, use Laravel Boost `application-info` and `search-docs`.
 
 ## Module Boundary
@@ -55,7 +61,7 @@ Use `Misaf\VendraSupport\Filament\Navigation\NavigationGroup` as the single sour
 - Keep current item order:
   - Catalog: Products 1, Attributes 2.
   - Sales: Transactions 1 when enabled, Currencies 2, Carts 3.
-  - Customers: Users 1, Permissions 2.
+  - Customers: Users and User Profiles in the shared user-management group, then Roles and Permissions in the permission-management group.
   - Content: Blog 1, Custom Pages 2, FAQs 3, Multimedia 4, Tags 5.
   - Marketing: Affiliates 1, Newsletters 2.
   - Localization: Languages 1, Geography 2.
