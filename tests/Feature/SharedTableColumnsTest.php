@@ -10,11 +10,15 @@ use Misaf\VendraSupport\Filament\Infolists\Components\CreatedAtEntry;
 use Misaf\VendraSupport\Filament\Infolists\Components\DateTimeEntry;
 use Misaf\VendraSupport\Filament\Infolists\Components\UpdatedAtEntry;
 use Misaf\VendraSupport\Filament\Tables\Columns\CreatedAtColumn;
+use Misaf\VendraSupport\Filament\Tables\Columns\DeletedAtColumn;
 use Misaf\VendraSupport\Filament\Tables\Columns\DescriptionColumn;
 use Misaf\VendraSupport\Filament\Tables\Columns\IsActiveIconColumn;
+use Misaf\VendraSupport\Filament\Tables\Columns\IsDefaultIconColumn;
+use Misaf\VendraSupport\Filament\Tables\Columns\IsPrimaryIconColumn;
 use Misaf\VendraSupport\Filament\Tables\Columns\NameColumn;
 use Misaf\VendraSupport\Filament\Tables\Columns\RowIndexColumn;
 use Misaf\VendraSupport\Filament\Tables\Columns\UpdatedAtColumn;
+use Misaf\VendraSupport\Filament\Tables\Filters\IsDefaultFilter;
 use Misaf\VendraSupport\Filament\Tables\Filters\QueryBuilder\Constraints\NameConstraint;
 use Misaf\VendraSupport\Filament\Tables\Filters\QueryBuilder\Constraints\PositionConstraint;
 use Misaf\VendraSupport\Filament\Tables\Filters\QueryBuilder\Constraints\SlugConstraint;
@@ -24,6 +28,9 @@ it('defaults the timestamp and row index columns to their shared names and label
         ->and(CreatedAtColumn::make()->getLabel())->toBe(__('vendra-support::attributes.created_at'))
         ->and(UpdatedAtColumn::make()->getName())->toBe('updated_at')
         ->and(UpdatedAtColumn::make()->getLabel())->toBe(__('vendra-support::attributes.updated_at'))
+        ->and(DeletedAtColumn::make()->getName())->toBe('deleted_at')
+        ->and(DeletedAtColumn::make()->getLabel())->toBe(__('vendra-support::attributes.deleted_at'))
+        ->and(DeletedAtColumn::make()->getPlaceholder())->toBe('—')
         ->and(RowIndexColumn::make()->getName())->toBe('row')
         ->and(RowIndexColumn::make()->getLabel())->toBe('#');
 });
@@ -65,6 +72,17 @@ it('defaults the position, name and slug constraints and the active icon column 
         ->and(IsActiveIconColumn::make()->getName())->toBe('active')
         ->and(IsActiveIconColumn::make()->getLabel())->toBe(__('vendra-support::attributes.active'))
         ->and(IsActiveIconColumn::make()->isBoolean())->toBeTrue();
+});
+
+it('defaults the default and primary icon columns and the default filter to their shared names and labels', function (): void {
+    expect(IsDefaultIconColumn::make()->getName())->toBe('is_default')
+        ->and(IsDefaultIconColumn::make()->getLabel())->toBe(__('vendra-support::attributes.is_default'))
+        ->and(IsDefaultIconColumn::make()->isBoolean())->toBeTrue()
+        ->and(IsPrimaryIconColumn::make()->getName())->toBe('is_primary')
+        ->and(IsPrimaryIconColumn::make()->getLabel())->toBe(__('vendra-support::attributes.is_primary'))
+        ->and(IsPrimaryIconColumn::make()->isBoolean())->toBeTrue()
+        ->and(IsDefaultFilter::make()->getName())->toBe('is_default')
+        ->and(IsDefaultFilter::make()->getLabel())->toBe(__('vendra-support::attributes.is_default'));
 });
 
 it('defaults the name and description columns to their shared labels and icons', function (): void {

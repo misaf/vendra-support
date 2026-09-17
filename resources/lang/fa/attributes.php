@@ -5,9 +5,11 @@ declare(strict_types=1);
 return [
     'active' => 'فعال',
     'created_at' => 'تاریخ ایجاد',
+    'deleted_at' => 'تاریخ حذف',
     'description' => 'توضیحات',
     'inactive' => 'غیرفعال',
     'is_default' => 'پیش‌فرض',
+    'is_primary' => 'اصلی',
     'name' => 'نام',
     'position' => 'جایگاه',
     'slug' => 'نامک',

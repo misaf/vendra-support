@@ -5,9 +5,11 @@ declare(strict_types=1);
 return [
     'active' => 'Active',
     'created_at' => 'Created At',
+    'deleted_at' => 'Deleted At',
     'description' => 'Description',
     'inactive' => 'Inactive',
     'is_default' => 'Default',
+    'is_primary' => 'Primary',
     'name' => 'Name',
     'position' => 'Position',
     'slug' => 'Slug',

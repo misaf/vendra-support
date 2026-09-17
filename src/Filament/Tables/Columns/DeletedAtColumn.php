@@ -4,21 +4,17 @@ declare(strict_types=1);
 
 namespace Misaf\VendraSupport\Filament\Tables\Columns;
 
-use Filament\Tables\Columns\IconColumn;
-
-final class IsActiveIconColumn extends IconColumn
+final class DeletedAtColumn extends TimestampColumn
 {
     public static function getDefaultName(): string
     {
-        return 'active';
+        return 'deleted_at';
     }
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this
-            ->label(__('vendra-support::attributes.active'))
-            ->boolean();
+        $this->placeholder('—');
     }
 }
