@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Misaf\VendraSupport\Tests\Unit;
+namespace Misaf\VendraSupport\Tests\Feature;
 
+use Illuminate\Support\Facades\Exceptions;
 use Misaf\VendraSupport\Capabilities\AttributeIntegration;
 use Misaf\VendraSupport\Capabilities\NullAttributeResolver;
 use Misaf\VendraSupport\Contracts\AttributeResolver;
+use Misaf\VendraSupport\Tests\Unit\SupportTestAttributeValue;
+use RuntimeException;
 
 it('falls back to unavailable attribute integration', function (): void {
     app()->instance(AttributeResolver::class, new class implements AttributeResolver
@@ -57,6 +60,7 @@ it('uses the bound attribute resolver when available', function (): void {
 });
 
 it('falls back when the bound attribute resolver throws', function (): void {
+    Exceptions::fake();
     app()->instance(AttributeResolver::class, new class implements AttributeResolver
     {
         public function available(): bool
@@ -78,6 +82,8 @@ it('falls back when the bound attribute resolver throws', function (): void {
     expect(AttributeIntegration::isAvailable())->toBeFalse()
         ->and(AttributeIntegration::valueModel())->toBeNull()
         ->and(AttributeIntegration::options())->toBeEmpty();
+
+    Exceptions::assertReportedCount(3);
 });
 
 it('uses the support null resolver fallback shape', function (): void {
@@ -86,4 +92,15 @@ it('uses the support null resolver fallback shape', function (): void {
     expect($resolver->available())->toBeFalse()
         ->and($resolver->valueModel())->toBeNull()
         ->and($resolver->options())->toBeEmpty();
+});
+
+it('falls back when no attribute resolver is registered', function (): void {
+    Exceptions::fake();
+    app()->offsetUnset(AttributeResolver::class);
+
+    expect(AttributeIntegration::isAvailable())->toBeFalse()
+        ->and(AttributeIntegration::valueModel())->toBeNull()
+        ->and(AttributeIntegration::options())->toBeEmpty();
+
+    Exceptions::assertNothingReported();
 });

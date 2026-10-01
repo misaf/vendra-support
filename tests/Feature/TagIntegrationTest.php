@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Misaf\VendraSupport\Tests\Unit;
+namespace Misaf\VendraSupport\Tests\Feature;
 
-use Misaf\VendraSupport\Capabilities\EloquentTagResolver;
+use Illuminate\Support\Facades\Exceptions;
 use Misaf\VendraSupport\Capabilities\NullTagResolver;
 use Misaf\VendraSupport\Capabilities\TagIntegration;
 use Misaf\VendraSupport\Contracts\TagResolver;
 use Misaf\VendraSupport\Support\TagRelationship;
+use Misaf\VendraSupport\Tests\Unit\SupportTestTag;
 use RuntimeException;
 
 it('falls back to unavailable tag integration', function (): void {
@@ -21,13 +22,16 @@ it('falls back to unavailable tag integration', function (): void {
 it('exposes relationship metadata from the bound tag resolver', function (): void {
     $relationship = new TagRelationship(SupportTestTag::class);
 
-    app()->instance(TagResolver::class, new EloquentTagResolver($relationship));
+    $resolver = $this->mock(TagResolver::class);
+    $resolver->shouldReceive('available')->andReturnTrue();
+    $resolver->shouldReceive('relationship')->andReturn($relationship);
 
     expect(TagIntegration::isAvailable())->toBeTrue()
         ->and(TagIntegration::relationship())->toBe($relationship);
 });
 
 it('falls back when the bound tag resolver throws', function (): void {
+    Exceptions::fake();
     app()->instance(TagResolver::class, new class implements TagResolver
     {
         public function available(): bool
@@ -43,4 +47,16 @@ it('falls back when the bound tag resolver throws', function (): void {
 
     expect(TagIntegration::isAvailable())->toBeFalse()
         ->and(TagIntegration::relationship())->toBeNull();
+
+    Exceptions::assertReportedCount(2);
+});
+
+it('falls back when no tag resolver is registered', function (): void {
+    Exceptions::fake();
+    app()->offsetUnset(TagResolver::class);
+
+    expect(TagIntegration::isAvailable())->toBeFalse()
+        ->and(TagIntegration::relationship())->toBeNull();
+
+    Exceptions::assertNothingReported();
 });

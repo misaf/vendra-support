@@ -7,6 +7,10 @@ description: "Create, modify, review, or test the Vendra Support module in packa
 
 ## Workflow
 
+- `Capabilities\IntegrationExceptions` reports unexpected capability failures through Laravel while preserving fallback results. Missing integration tables remain quiet; do not suppress connection failures, invalid columns, or programming errors. The host isolated-consumer tests boot required packages in fresh processes without optional provider classes or package metadata.
+
+- Keep Support provider-neutral: shared contracts, null defaults, integration helpers, tenancy primitives, and reusable UI belong here. Concrete Attribute, Currency, and Tag adapters belong to their provider packages. Support must not require, suggest, or reference another first-party package. The former `Misaf\VendraSupport\Capabilities\EloquentAttributeResolver`, `EloquentCurrencyResolver`, and `EloquentTagResolver` names have moved to `Misaf\VendraAttribute\Support`, `Misaf\VendraCurrency\Support`, and `Misaf\VendraTagger\Support`, respectively; update imports directly, with no compatibility aliases.
+
 - Inspect `composer.json`, sibling files, and existing tests before changing the package.
 - Use Laravel Boost `application-info` and `search-docs` before code changes.
 - Apply `laravel-best-practices` to Laravel PHP and `pest-testing` whenever tests change.
@@ -110,3 +114,5 @@ Use `Misaf\VendraSupport\Filament\Navigation\NavigationGroup` as the single sour
 - If PHP files changed, run `vendor/bin/pint --dirty --format agent`.
 
 - Demo seeders declare their factory dependencies in `FACTORIES`; the shared base uses bundled fixtures when any declared factory is unavailable, including standalone Composer installs. Keep factories in development autoloading.
+
+- `Contracts\StockRestorer` is the provider-neutral stock restoration boundary: `sellableType()` supplies the supported morph alias and `restore()` accepts quantities keyed by sellable ID. `Capabilities\NullStockRestorer` returns no alias and throws on restoration. Stock restoration is correctness-critical; callers must preserve their transaction when no provider is available rather than silently clearing deducted stock.
